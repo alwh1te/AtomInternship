@@ -1,5 +1,8 @@
 package org.example.atom.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.atom.model.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.example.atom.service.TopicService;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class TopicController {
@@ -46,26 +50,25 @@ public class TopicController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/topics/{id}")
-    public ResponseEntity<?> addMessage(@PathVariable("id") int id, @RequestBody Topic topic) {
-//        List<String> messages = newTopic.getMessages();
-//        messages.add(message);
-//        newTopic.setMessages(messages);
+    @PutMapping(value = "/topics")
+    public ResponseEntity<?> addMessage(@RequestBody String request) {
+        ObjectMapper mapper = new ObjectMapper();
+        int id;
+        Topic topic;
+        try {
+            JsonNode node = mapper.readTree(request);
+            id = node.get("id").asInt();
+            topic = mapper.convertValue(node, Topic.class);
+
+        } catch (JsonProcessingException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         final boolean updated = topicService.addMessage(id, topic);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
-
-//    @PutMapping(value = "/topics/{id}")
-//    public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody Topic newTopic) {
-//        final boolean updated = topicService.update(id, newTopic);
-//
-//        return updated
-//                ? new ResponseEntity<>(HttpStatus.OK)
-//                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
-//    }
 
     @DeleteMapping(value = "/topics/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
