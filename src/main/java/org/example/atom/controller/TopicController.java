@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.example.atom.service.TopicService;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class TopicController {
@@ -33,8 +32,8 @@ public class TopicController {
 
 
     @GetMapping(value = "/topics")
-    public ResponseEntity<List<Topic>> read() {
-        final List<Topic> topics = topicService.readAll();
+    public ResponseEntity<List<String>> readTopicsNames() {
+        final List<String> topics = topicService.readTopicsNames();
 
         return topics != null &&  !topics.isEmpty()
                 ? new ResponseEntity<>(topics, HttpStatus.OK)
@@ -42,11 +41,11 @@ public class TopicController {
     }
 
     @GetMapping(value = "/topics/{id}")
-    public ResponseEntity<Topic> read(@PathVariable(name = "id") int id) {
-        final Topic topic = topicService.read(id);
+    public ResponseEntity<List<String>> readMessages(@PathVariable(name = "id") int id) {
+        final List<String> messages = topicService.readMessages(id);
 
-        return topic != null
-                ? new ResponseEntity<>(topic, HttpStatus.OK)
+        return messages != null
+                ? new ResponseEntity<>(messages, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

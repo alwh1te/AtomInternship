@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TopicServiceImpl implements TopicService {
 
     private static final Map<Integer, Topic> TOPIC_MAP = new HashMap<>();
+    private static final Map<String, Integer> TOPIC_NAME_ID_MAP = new HashMap<>();
     private static final AtomicInteger TOPIC_ID_HOLED = new AtomicInteger();
 
     @Override
@@ -23,9 +24,10 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<Topic> readAll() {
-        return new ArrayList<>(TOPIC_MAP.values());
+    public List<String> readMessages(int id) {
+        return TOPIC_MAP.get(id).getMessages();
     }
+
 
     @Override
     public Topic read(int id) {
@@ -33,15 +35,22 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public List<String> readTopicsNames() {
+        List<String> lst = new ArrayList<>();
+        for (Topic topic : TOPIC_MAP.values()) {
+            lst.add(topic.getName());
+        }
+        return lst;
+    }
+
+    @Override
     public boolean addMessage(int id, Topic topic) {
         if (TOPIC_MAP.containsKey(id)) {
-//            List<String> messages = topic.getMessages();
-//            messages.add(message);
-//            topic.setMessages(messages);
             TOPIC_MAP.get(id).addMessage(topic.getMessages());
             return true;
         }
-        return false;    }
+        return false;
+    }
 
     @Override
     public boolean update(int id, Topic updatedTopic) {

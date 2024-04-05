@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface TopicService {
     void create(Topic topic);
-    List<Topic> readAll();
+    List<String> readMessages(int id);
     Topic read(int id);
+    List<String> readTopicsNames();
     boolean addMessage(int id, Topic topic);
     boolean update(int id, Topic updatedTopic);
     boolean delete(int id);
