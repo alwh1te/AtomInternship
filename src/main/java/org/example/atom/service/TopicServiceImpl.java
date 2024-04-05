@@ -32,12 +32,8 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<String> readAll() {
-        List<String> lst = new ArrayList<>();
-        for (Topic topic : topicRepository.findAll()) {
-            lst.add(topic.getName());
-        }
-        return lst;
+    public List<Topic> readAll() {
+        return topicRepository.findAll();
     }
 
     @Override

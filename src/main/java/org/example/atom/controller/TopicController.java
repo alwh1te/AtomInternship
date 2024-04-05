@@ -1,8 +1,5 @@
 package org.example.atom.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.atom.model.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,10 +29,10 @@ public class TopicController {
 
 
     @GetMapping(value = "/topics")
-    public ResponseEntity<List<String>> readTopicsNames() {
-        final List<String> topics = topicService.readAll();
+    public ResponseEntity<List<Topic>> readTopicsNames() {
+        final List<Topic> topics = topicService.readAll();
 
-        return topics != null &&  !topics.isEmpty()
+        return topics != null && !topics.isEmpty()
                 ? new ResponseEntity<>(topics, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -49,20 +46,17 @@ public class TopicController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/topics")
-    public ResponseEntity<?> addMessage(@RequestBody String request) {
-        ObjectMapper mapper = new ObjectMapper();
-        int id;
-        Topic topic;
-        try {
-            JsonNode node = mapper.readTree(request);
-            id = node.get("id").asInt();
-            topic = mapper.convertValue(node, Topic.class);
+    @PutMapping(value = "/topics/{id}")
+    public ResponseEntity<?> addMessage(@PathVariable("id") int id, @RequestBody Topic topic) {
+        final boolean added = topicService.addMessage(id, topic);
 
-        } catch (JsonProcessingException e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        final boolean updated = topicService.addMessage(id, topic);
+        return added
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+    @PutMapping(value = "/topics/{id}/{messageId}")
+    public ResponseEntity<?> updateMessage(@PathVariable(name = "topicId") int topicId, @PathVariable int messageId, @RequestBody Topic topic) {
+        final boolean updated = topicService.updateMessage(topicId, messageId, topic);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)

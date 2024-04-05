@@ -8,7 +8,7 @@ public interface TopicService {
     void create(Topic topic);
     List<String> readMessages(int id);
     Topic read(int id);
-    List<String> readAll();
+    List<Topic> readAll();
     boolean addMessage(int id, Topic topic);
 
     boolean updateMessage(int topicId, int messageId, Topic updatedTopic);

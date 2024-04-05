@@ -26,6 +26,10 @@ public class TopicRequestManager {
         return getStringInfo(BASE_URL + '/' + name);
     }
 
+    public void updateMessage(int topicId, int messageId, String message) {
+
+    }
+
     public void createTopic(String name, List<String> messages) {
         RestTemplate restTemplate = new RestTemplate();
         RequestBody requestBody = new RequestBody(name, messages);
