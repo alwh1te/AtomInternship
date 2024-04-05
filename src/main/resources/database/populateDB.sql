@@ -1,0 +1,3 @@
+-- INSERT INTO topics VALUES
+-- (1, 'First'),
+-- (2, 'Second');

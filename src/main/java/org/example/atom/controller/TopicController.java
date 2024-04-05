@@ -33,7 +33,7 @@ public class TopicController {
 
     @GetMapping(value = "/topics")
     public ResponseEntity<List<String>> readTopicsNames() {
-        final List<String> topics = topicService.readTopicsNames();
+        final List<String> topics = topicService.readAll();
 
         return topics != null &&  !topics.isEmpty()
                 ? new ResponseEntity<>(topics, HttpStatus.OK)
@@ -71,8 +71,7 @@ public class TopicController {
 
     @DeleteMapping(value = "/topics/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
-        final boolean deleted = topicService.delete(id);
-
+        boolean deleted = topicService.delete(id);
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);

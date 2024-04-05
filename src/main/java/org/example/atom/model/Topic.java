@@ -1,11 +1,19 @@
 package org.example.atom.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
+@Entity
+@Table(name = "topics")
 public class Topic {
-    private List<String> messages = new ArrayList<>();
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @ElementCollection
+    private List<String> messages = new ArrayList<>();
+    @Column(name = "name")
     private String name;
 
     public List<String> getMessages() {
@@ -32,5 +40,8 @@ public class Topic {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public void removeMessage(int id) {
+        this.messages.remove(id);
     }
 }

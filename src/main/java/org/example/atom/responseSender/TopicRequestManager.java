@@ -2,11 +2,9 @@ package org.example.atom.responseSender;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,18 +22,14 @@ public class TopicRequestManager {
         return getStringInfo(BASE_URL + '/' + id);
     }
 
+    public List<String> readMessages(String name) {
+        return getStringInfo(BASE_URL + '/' + name);
+    }
+
     public void createTopic(String name, List<String> messages) {
-
-        // Создание объекта RestTemplate для выполнения HTTP-запросов
         RestTemplate restTemplate = new RestTemplate();
-
-        // Создание объекта, представляющего тело запроса
         RequestBody requestBody = new RequestBody(name, messages);
-
-        // Создание HTTP-запроса с телом, содержащим id и messages
         HttpEntity<RequestBody> requestEntity = new HttpEntity<>(requestBody);
-
-        // Отправка POST-запроса на сервер
         restTemplate.exchange(BASE_URL, HttpMethod.POST, requestEntity, String.class);
     }
 

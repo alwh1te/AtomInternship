@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS topics
+(
+    id   BIGSERIAL PRIMARY KEY,
+    name  VARCHAR(200) NOT NULL,
+    string_list VARCHAR[]
+);
