@@ -16,7 +16,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @GetMapping(value = "/topics/{id}")
+    @GetMapping(value = "/topic/{id}/message")
     public ResponseEntity<List<Message>> readMessages(@PathVariable(name = "id") int id) {
         final List<Message> messages = messageService.readMessages(id);
 
@@ -24,7 +24,7 @@ public class MessageController {
                 ? new ResponseEntity<>(messages, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @GetMapping(value = "/topics/{id}/{messageId}")
+    @GetMapping(value = "/topic/{id}/message/{messageId}")
     public ResponseEntity<Message> readMessages(@PathVariable(name = "id") int id, @PathVariable(name = "messageId") int messageId) {
         final Message message = messageService.readMessage(id, messageId);
 
@@ -33,7 +33,7 @@ public class MessageController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/topics/{id}")
+    @PutMapping(value = "/topic/{id}/message")
     public ResponseEntity<?> addMessage(@PathVariable("id") int topicId, @RequestBody Message message) {
         final boolean added = messageService.addMessage(topicId, message);
 
@@ -41,7 +41,7 @@ public class MessageController {
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
-    @PutMapping(value = "/topics/{id}/{messageId}")
+    @PutMapping(value = "/topic/{id}/message/{messageId}")
     public ResponseEntity<?> updateMessage(@PathVariable(name = "messageId") int messageId, @RequestBody Message message) {
         final boolean updated = messageService.updateMessage(messageId, message);
 
@@ -50,7 +50,7 @@ public class MessageController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @DeleteMapping(value = "/topics/{id}/{messageId}")
+    @DeleteMapping(value = "/topic/{id}/message/{messageId}")
     public ResponseEntity<?> deleteMessage(@PathVariable(name = "messageId") int messageId) {
         final boolean deleted = messageService.deleteMessage(messageId);
 

@@ -18,14 +18,14 @@ public class TopicController {
         this.topicService = topicService;
     }
 
-    @PostMapping(value = "/topics")
+    @PostMapping(value = "/topic")
     public ResponseEntity<?> create(@RequestBody Topic topic) {
         topicService.create(topic);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
-    @GetMapping(value = "/topics")
+    @GetMapping(value = "/topic")
     public ResponseEntity<List<Topic>> readAll() {
         final List<Topic> topics = topicService.readAll();
 
@@ -35,7 +35,7 @@ public class TopicController {
     }
 
 
-    @DeleteMapping(value = "/topics/{id}")
+    @DeleteMapping(value = "/topic/{id}")
     public ResponseEntity<?> deleteTopic(@PathVariable(name = "id") int id) {
         boolean deleted = topicService.deleteTopic(id);
         return deleted
