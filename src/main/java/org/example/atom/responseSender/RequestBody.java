@@ -1,12 +1,14 @@
 package org.example.atom.responseSender;
 
+import org.example.atom.model.Message;
+
 import java.util.List;
 
 public class RequestBody {
     private String name;
-    private List<String> messages;
+    private List<Message> messages;
 
-    public RequestBody(String name, List<String> messages) {
+    public RequestBody(String name, List<Message> messages) {
         this.name = name;
         this.messages = messages;
     }
@@ -15,7 +17,7 @@ public class RequestBody {
         return name;
     }
 
-    public List<String> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 }
