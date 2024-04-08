@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Table(name = "messages")
 public class Message {
     @Id
-    @Column(name = "messageId")
+    @Column(name = "message_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int messageId;
     @Column(name = "author")
@@ -19,7 +19,7 @@ public class Message {
     private LocalDate date;
 
 //    @ManyToOne
-    @Column(name = "topicId")
+    @Column(name = "topic_id")
     private int topicId;
 
     public String getAuthor() {

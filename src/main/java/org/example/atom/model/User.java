@@ -12,7 +12,7 @@ import java.util.Collection;
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "userId")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
     @Column(unique = true, name = "username")
