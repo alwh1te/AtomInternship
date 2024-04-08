@@ -1,7 +1,7 @@
 package org.example.atom.controller;
 
 import org.example.atom.model.User;
-import org.example.atom.security.UserService;
+import org.example.atom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class UserController {
     public ResponseEntity<?> registration(@RequestBody User user) {
         boolean register = userService.saveUser(user);
         return register
-                ? new ResponseEntity<>(HttpStatus.OK)
+                ? new ResponseEntity<>("Cool", HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }
