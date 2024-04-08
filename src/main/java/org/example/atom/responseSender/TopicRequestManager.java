@@ -1,53 +1,65 @@
 package org.example.atom.responseSender;
 
-import org.example.atom.model.Message;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class TopicRequestManager {
-
-    private final String BASE_URL = "http://localhost:8080/topics";
-
-
-    public List<Message> readTopics() {
-        return getStringInfo(BASE_URL);
+    public void sendGetRequest(String endpoint) {
+        sendRequest(endpoint, "GET", null);
+    }
+    public void sendPostRequest(String endpoint, Object requestBody) {
+        sendRequest(endpoint, "POST", requestBody);
     }
 
-    public List<Message> readMessages(int id) {
-        return getStringInfo(BASE_URL + '/' + id);
+    public void sendPutRequest(String endpoint, Object requestBody) {
+        sendRequest(endpoint, "PUT", requestBody);
     }
 
-    public List<Message> readMessages(String name) {
-        return getStringInfo(BASE_URL + '/' + name);
+    public void sendDeleteRequest(String endpoint) {
+        sendRequest(endpoint, "DELETE", null);
     }
 
-    public void updateMessage(int topicId, int messageId, String message) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpEntity<RequestBody> requestEntity = new HttpEntity<>();
-//        restTemplate.exchange(BASE_URL, HttpMethod.POST, requestEntity, String.class);
+    private void sendRequest(String endpoint, String method, Object requestBody) {
+        try {
+            String BASE_URL = "http://localhost:8080/topic";
+            URL url = new URL(BASE_URL + endpoint);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestMethod(method);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+
+            String jsonPayload = convertObjectToJson(requestBody);
+
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                System.out.println(response);
+            }
+
+            connection.disconnect();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
-    public void createTopic(String title, List<Message> messages) {
-        RestTemplate restTemplate = new RestTemplate();
-        RequestBody requestBody = new RequestBody(title, messages);
-        HttpEntity<RequestBody> requestEntity = new HttpEntity<>(requestBody);
-        restTemplate.exchange(BASE_URL, HttpMethod.POST, requestEntity, String.class);
-    }
-
-    private List<Message> getStringInfo(String URL) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<Message[]> response = restTemplate.exchange(URL, HttpMethod.GET, null, Message[].class);
-
-        Message[] stringArray = response.getBody();
-
-        return new ArrayList<>(Arrays.asList(stringArray));
+    private String convertObjectToJson(Object obj) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(obj);
     }
 }

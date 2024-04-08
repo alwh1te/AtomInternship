@@ -1,8 +1,7 @@
 CREATE TABLE IF NOT EXISTS topics
 (
     topicId BIGSERIAL PRIMARY KEY,
-    title  VARCHAR(255) NOT NULL,
-    date timestamp
+    title  VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS messages
@@ -11,7 +10,7 @@ CREATE TABLE IF NOT EXISTS messages
     topicId INT NOT NULL,
     text  VARCHAR(255) NOT NULL,
     author  VARCHAR(255) NOT NULL,
-    date timestamp
+    date date default current_date
 );
 
 CREATE TABLE IF NOT EXISTS users

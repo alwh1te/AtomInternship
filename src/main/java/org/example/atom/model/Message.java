@@ -2,6 +2,8 @@ package org.example.atom.model;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 @Entity
 @Table(name = "messages")
@@ -16,7 +18,7 @@ public class Message {
     @Column(name = "text")
     private String text;
     @Column(name = "date")
-    private LocalDate date;
+    private Date date;
 
 //    @ManyToOne
     @Column(name = "topic_id")
@@ -38,11 +40,11 @@ public class Message {
         this.text = text;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
