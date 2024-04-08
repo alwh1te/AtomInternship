@@ -1,11 +1,6 @@
 package org.example.atom.model;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Entity
 @Table(name = "users")
@@ -26,6 +21,9 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+    public String getUsername() {
+        return username;
     }
 
     public void setPassword(String password) {
