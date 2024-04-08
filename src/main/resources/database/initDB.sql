@@ -13,3 +13,11 @@ CREATE TABLE IF NOT EXISTS messages
     author  VARCHAR(255) NOT NULL,
     date timestamp
 );
+
+CREATE TABLE IF NOT EXISTS users
+(
+    userId BIGSERIAL PRIMARY KEY,
+    role VARCHAR(50) NOT NULL,
+    username  VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
