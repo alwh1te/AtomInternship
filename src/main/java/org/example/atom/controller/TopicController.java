@@ -28,20 +28,14 @@ public class TopicController {
 
 
     @GetMapping(value = "/topic")
-    public ResponseEntity<List<Topic>> readAll() {
-        final List<Topic> topics = topicService.readAll();
+    public List<Topic> readAll() {
 
-        return topics != null && !topics.isEmpty()
-                ? new ResponseEntity<>(topics, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return topicService.readAll();
     }
 
     @GetMapping("/topic/{title}")
-    public ResponseEntity<?> getTopicByTitle(@PathVariable("title") String title) {
-        final Topic topic = topicService.findTopicByTitle(title);
-        return topic != null
-                ? new ResponseEntity<>(topic, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public Topic getTopicByTitle(@PathVariable("title") String title) {
+        return topicService.findTopicByTitle(title);
     }
 
 

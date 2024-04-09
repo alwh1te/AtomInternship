@@ -23,4 +23,12 @@ public class Topic {
     public void setTitle(String name) {
         this.title = name;
     }
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "topicId=" + topicId +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

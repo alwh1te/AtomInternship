@@ -16,20 +16,12 @@ public class MessageController {
     private MessageService messageService;
 
     @GetMapping(value = "/topic/{id}/message")
-    public ResponseEntity<List<Message>> readMessages(@PathVariable(name = "id") int id) {
-        final List<Message> messages = messageService.readMessages(id);
-
-        return messages != null
-                ? new ResponseEntity<>(messages, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public List<Message> readMessages(@PathVariable(name = "id") int id) {
+        return messageService.readMessages(id);
     }
-    @GetMapping(value = "/topic/{id}/message/{messageId}")
-    public ResponseEntity<Message> readMessages(@PathVariable(name = "id") int id, @PathVariable(name = "messageId") int messageId) {
-        final Message message = messageService.readMessage(id, messageId);
-
-        return message != null
-                ? new ResponseEntity<>(message, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping(value = "/topic/{topicId}/message/{messageId}")
+    public Message readMessage(@PathVariable(name = "messageId") int messageId) {
+        return messageService.readMessage(messageId);
     }
 
     @PutMapping(value = "/topic/{id}/message")
@@ -40,9 +32,9 @@ public class MessageController {
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
-    @PutMapping(value = "/topic/{id}/message/{messageId}")
-    public ResponseEntity<?> updateMessage(@PathVariable(name = "messageId") int messageId, @RequestBody Message message) {
-        final boolean updated = messageService.updateMessage(messageId, message);
+    @PutMapping(value = "/topic/{topicId}/message/{messageId}")
+    public ResponseEntity<?> updateMessage(@PathVariable(name = "topicId") int topicId, @PathVariable(name = "messageId") int messageId, @RequestBody Message message) {
+        final boolean updated = messageService.updateMessage(topicId, messageId, message);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)

@@ -3,8 +3,7 @@ package org.example.atom.model;
 import jakarta.persistence.*;
 
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDate;
+
 @Entity
 @Table(name = "messages")
 public class Message {
@@ -24,7 +23,7 @@ public class Message {
     @Column(name = "topic_id")
     private int topicId;
 
-    public String getAuthor() {
+    public String getAuthorName() {
         return author;
     }
 
@@ -62,5 +61,16 @@ public class Message {
 
     public void setTopicId(int topicId) {
         this.topicId = topicId;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "messageId=" + messageId +
+                ", author='" + author + '\'' +
+                ", text='" + text + '\'' +
+                ", date=" + date +
+                ", topicId=" + topicId +
+                '}';
     }
 }

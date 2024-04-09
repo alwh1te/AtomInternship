@@ -1,8 +1,10 @@
 package org.example.atom.service;
 
 import org.example.atom.model.Message;
+import org.example.atom.model.User;
 import org.example.atom.repository.MessageRepository;
 import org.example.atom.repository.TopicRepository;
+import org.example.atom.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +17,21 @@ public class MessageServiceImpl implements MessageService {
     private MessageRepository messageRepository;
     @Autowired
     private TopicRepository topicRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Override
     public List<Message> readMessages(int topicId) {
         return messageRepository.findByTopicId(topicId);
     }
 
     @Override
-    public Message readMessage(int topicId, int messageId) {
-        return messageRepository.findByTopicIdAndMessageId(topicId, messageId);
+    public Message readMessage(int messageId) {
+        return messageRepository.findMessageByMessageId(messageId);
+    }
+
+    @Override
+    public User getAuthor(Message message) {
+        return userRepository.findByUsername(message.getAuthorName());
     }
 
     @Override
@@ -36,13 +45,15 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public boolean updateMessage(int messageId, Message message) {
+    public boolean updateMessage(int topicId, int messageId, Message message) {
         if (messageRepository.existsById(messageId)) {
-            Message oldMessage = messageRepository.getReferenceById(messageId);
-            oldMessage.setText(message.getText());
-            oldMessage.setDate(message.getDate());
-            oldMessage.setAuthor(message.getAuthor());
-            messageRepository.save(oldMessage);
+//            Message oldMessage = messageRepository.getReferenceById(messageId);
+            messageRepository.deleteById(messageId);
+            message.setTopicId(topicId);
+//            oldMessage.setText(message.getText());
+//            oldMessage.setDate(message.getDate());
+//            oldMessage.setAuthor(message.getAuthor());
+            messageRepository.save(message);
             return true;
         }
         return false;

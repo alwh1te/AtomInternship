@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
     List<Message> findByTopicId(int topicId);
-    Message findByTopicIdAndMessageId(int topicId, int messageId);
+    Message findMessageByMessageId(int messageId);
 }
