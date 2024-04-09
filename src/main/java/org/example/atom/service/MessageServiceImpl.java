@@ -19,6 +19,7 @@ public class MessageServiceImpl implements MessageService {
     private TopicRepository topicRepository;
     @Autowired
     private UserRepository userRepository;
+
     @Override
     public List<Message> readMessages(int topicId) {
         return messageRepository.findByTopicId(topicId);
@@ -47,12 +48,8 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public boolean updateMessage(int topicId, int messageId, Message message) {
         if (messageRepository.existsById(messageId)) {
-//            Message oldMessage = messageRepository.getReferenceById(messageId);
             messageRepository.deleteById(messageId);
             message.setTopicId(topicId);
-//            oldMessage.setText(message.getText());
-//            oldMessage.setDate(message.getDate());
-//            oldMessage.setAuthor(message.getAuthor());
             messageRepository.save(message);
             return true;
         }

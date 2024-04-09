@@ -11,12 +11,9 @@ import java.util.List;
 
 @RestController
 public class TopicController {
-    private final TopicService topicService;
 
     @Autowired
-    public TopicController(TopicService topicService) {
-        this.topicService = topicService;
-    }
+    private TopicService topicService;
 
     @PostMapping(value = "/topic")
     public ResponseEntity<?> create(@RequestBody Topic topic) {
@@ -25,7 +22,6 @@ public class TopicController {
                 ? new ResponseEntity<>("Topic was successfully created", HttpStatus.CREATED)
                 : new ResponseEntity<>("Topic with this title already exist", HttpStatus.CONFLICT);
     }
-
 
     @GetMapping(value = "/topic")
     public List<Topic> readAll() {
@@ -37,7 +33,6 @@ public class TopicController {
     public Topic getTopicByTitle(@PathVariable("title") String title) {
         return topicService.findTopicByTitle(title);
     }
-
 
     @DeleteMapping(value = "/topic/{id}")
     public ResponseEntity<?> deleteTopic(@PathVariable(name = "id") int id) {

@@ -19,7 +19,6 @@ public class Message {
     @Column(name = "date")
     private Date date;
 
-//    @ManyToOne
     @Column(name = "topic_id")
     private int topicId;
 
