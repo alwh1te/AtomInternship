@@ -220,12 +220,8 @@ public class AtomApplication {
             messageController.addMessage(topic.getTopicId(), message);
             return true;
         }
-        System.err.println(MessageInvalid());
+        System.err.println("message invalid");
         return false;
-    }
-
-    private static String MessageInvalid() {
-        return "message invalid";
     }
 
     private static boolean updateMessage(int topicId, int messageId, Message newMessage) {
@@ -236,7 +232,7 @@ public class AtomApplication {
                 messageController.updateMessage(topicId, messageId, newMessage);
                 return true;
             }
-            System.err.println(MessageInvalid());
+            System.err.println("message invalid");
         } else {
             System.err.println("auth failed");
         }
