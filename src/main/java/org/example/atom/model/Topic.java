@@ -9,7 +9,7 @@ public class Topic {
     @Column(name = "topic_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int topicId;
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
     private String title;
 
     public int getTopicId() {

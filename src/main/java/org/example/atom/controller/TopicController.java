@@ -20,8 +20,10 @@ public class TopicController {
 
     @PostMapping(value = "/topic")
     public ResponseEntity<?> create(@RequestBody Topic topic) {
-        topicService.create(topic);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        boolean created = topicService.create(topic);
+        return created
+                ? new ResponseEntity<>("Topic was successfully created", HttpStatus.CREATED)
+                : new ResponseEntity<>("Topic with this title already exist", HttpStatus.CONFLICT);
     }
 
 
@@ -31,6 +33,14 @@ public class TopicController {
 
         return topics != null && !topics.isEmpty()
                 ? new ResponseEntity<>(topics, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/topic/{title}")
+    public ResponseEntity<?> getTopicByTitle(@PathVariable("title") String title) {
+        final Topic topic = topicService.findTopicByTitle(title);
+        return topic != null
+                ? new ResponseEntity<>(topic, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

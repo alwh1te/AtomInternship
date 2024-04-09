@@ -23,6 +23,11 @@ public class AdminController {
         return userService.allUsers();
     }
 
+    @GetMapping("/admin/{username}")
+    public User findUserByUsername(@PathVariable("username") String username) {
+        return userService.findUserByUsername(username);
+    }
+
     @PostMapping("/admin/delete/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable(name = "userId") int userId) {
         boolean deleted = userService.deleteUser(userId);

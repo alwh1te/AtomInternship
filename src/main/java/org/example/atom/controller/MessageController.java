@@ -2,6 +2,7 @@ package org.example.atom.controller;
 
 import org.example.atom.model.Message;
 import org.example.atom.service.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +11,9 @@ import java.util.List;
 
 @RestController
 public class MessageController {
-    private final MessageService messageService;
 
-    public MessageController(MessageService messageService) {
-        this.messageService = messageService;
-    }
+    @Autowired
+    private MessageService messageService;
 
     @GetMapping(value = "/topic/{id}/message")
     public ResponseEntity<List<Message>> readMessages(@PathVariable(name = "id") int id) {

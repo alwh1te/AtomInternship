@@ -14,8 +14,17 @@ public class TopicServiceImpl implements TopicService {
     private TopicRepository topicRepository;
 
     @Override
-    public void create(Topic topic) {
+    public boolean create(Topic topic) {
+        if (topicRepository.findTopicByTitle(topic.getTitle()) != null) {
+            return false;
+        }
         topicRepository.save(topic);
+        return true;
+    }
+
+    @Override
+    public Topic findTopicByTitle(String title) {
+        return topicRepository.findTopicByTitle(title);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class UserController {
     public ResponseEntity<?> registration(@RequestBody User user) {
         boolean register = userService.saveUser(user);
         return register
-                ? new ResponseEntity<>("Cool", HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+                ? new ResponseEntity<>("User was successfully registered", HttpStatus.OK)
+                : new ResponseEntity<>("User already exist", HttpStatus.NOT_MODIFIED);
     }
 }
