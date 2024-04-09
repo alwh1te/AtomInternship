@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
@@ -49,7 +50,7 @@ public class AtomApplication {
                     currentUser = login(username, password);
                     System.out.println("Access granted");
                 } catch (AuthException e) {
-                    System.out.print("Looks like there is no user with your username, if you want to register, please enter \"register\": ");
+                    System.out.print("Looks like there is no user with your username or password is incorrect, if you want to register, please enter \"register\"\nOr try again (press enter)");
                     String reg = reader.readLine();
                     if (reg.equals("register")) {
                         try {
@@ -132,7 +133,7 @@ public class AtomApplication {
                     case "deleteTopic" -> {
                         System.out.print("Please, enter id of topic, which you want to delete: ");
                         int topicId = Integer.parseInt(reader.readLine());
-                        System.out.println(deleteMessage(topicId)
+                        System.out.println(deleteTopic(topicId)
                                 ? "Topic was successfully deleted!"
                                 : "Something went wrong :(, check cause below");
                     }
@@ -173,8 +174,11 @@ public class AtomApplication {
     }
 
     private static User regAdmin(String username, String password) throws UserAlreadyRegisteredException {
-        User user = register(username, password);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
         user.setRole(Role.ADMIN);
+        userController.registration(user);
         return user;
     }
 
@@ -208,6 +212,10 @@ public class AtomApplication {
     }
 
     private static boolean addMessage(Topic topic, Message message) {
+        if (topic == null) {
+            System.err.println("Topic invalid");
+            return false;
+        }
         if (isMessageValid(message)) {
             messageController.addMessage(topic.getTopicId(), message);
             return true;
@@ -256,11 +264,10 @@ public class AtomApplication {
     }
 
     private static List<Message> readMessages(Topic topic) {
+        if (topic == null) {
+            return new ArrayList<>();
+        }
         return messageController.readMessages(topic.getTopicId());
-    }
-
-    private static Topic getTopicByTitle(String title) {
-        return topicController.getTopicByTitle(title);
     }
 
     public static List<Topic> readAllTopics() {
